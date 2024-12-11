@@ -20,11 +20,9 @@ Gain practical experience using tools and techniques for both enumeration and br
 #### Pre-requisites
 Before starting this room, you should have a basic understanding of the following concepts:
 
-Familiarity with HTTP and HTTPS, including request/response structures and common status codes.
-Experience using tools like Burp Suite.
-Basic proficiency in navigating and using the Linux command line.
-Answer the questions below
-Deploy the target VM attached to this task by pressing the green Start Machine button. After obtaining the machine's generated IP address, you can either use the AttackBox or your own VM connected to TryHackMe's VPN.
+-1. Familiarity with HTTP and HTTPS, including request/response structures and common status codes.
+-2. Experience using tools like Burp Suite.
+-3. Basic proficiency in navigating and using the Linux command line.
 
 **Add 10.10.198.158 to your /etc/hosts file. For example:**
 
