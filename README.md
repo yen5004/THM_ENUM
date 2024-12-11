@@ -12,17 +12,17 @@ Authentication enumeration is a fundamental aspect of security testing, concentr
 #### Objectives
 By the end of this room, you will:
 
-Understand the significance of enumeration and how it sets the stage for effective brute-force attacks.
-Learn advanced enumeration methods, mainly focusing on extracting information from verbose error messages.
-Comprehend the relationship between enumeration and brute-force attacks in compromising authentication mechanisms.
-Gain practical experience using tools and techniques for both enumeration and brute-force attacks.
+1. Understand the significance of enumeration and how it sets the stage for effective brute-force attacks.
+2. Learn advanced enumeration methods, mainly focusing on extracting information from verbose error messages.
+3. Comprehend the relationship between enumeration and brute-force attacks in compromising authentication mechanisms.
+4. Gain practical experience using tools and techniques for both enumeration and brute-force attacks.
 
 #### Pre-requisites
 Before starting this room, you should have a basic understanding of the following concepts:
 
--1. Familiarity with HTTP and HTTPS, including request/response structures and common status codes.
--2. Experience using tools like Burp Suite.
--3. Basic proficiency in navigating and using the Linux command line.
+1. Familiarity with HTTP and HTTPS, including request/response structures and common status codes. 
+2. Experience using tools like Burp Suite. 
+3. Basic proficiency in navigating and using the Linux command line. 
 
 **Add 10.10.198.158 to your /etc/hosts file. For example:**
 
